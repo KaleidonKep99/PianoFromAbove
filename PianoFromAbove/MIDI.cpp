@@ -1224,7 +1224,7 @@ bool MIDIOutDevice::OpenKDMAPI() {
     return m_bIsOpen;
 }
 
-unsigned int MIDIOutDevice::KDMAPIActiveVoices() {
+uint64_t MIDIOutDevice::KDMAPIActiveVoices() {
     if (!m_bIsKDMAPI || !GetVoiceCount)
         return 0;
 

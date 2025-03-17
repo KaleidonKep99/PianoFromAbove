@@ -339,7 +339,7 @@ public:
 
     bool IsKDMAPIEnabled() { return m_bIsKDMAPI; }
     float KDMAPIRenderingTime();
-    unsigned int KDMAPIActiveVoices();
+    uint64_t KDMAPIActiveVoices();
 
 private:
     static FARPROC GetOmniMIDIProc(const char* func);
@@ -350,7 +350,7 @@ private:
     bool m_bIsKDMAPI;
     void(WINAPI* SendDirectData)(DWORD);
     float(WINAPI* GetRenderingTime)();
-    unsigned long long(WINAPI* GetVoiceCount)();
+    uint64_t(WINAPI* GetVoiceCount)();
     wstring m_sDevice;
     HMIDIOUT m_hMIDIOut;
 };
