@@ -455,6 +455,7 @@ INT_PTR WINAPI VizProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         CheckDlgButton(hWnd, IDC_FFMPEG, viz.bDumpFrames);
         CheckDlgButton(hWnd, IDC_COLORLOOP, viz.bColorLoop);
         CheckDlgButton(hWnd, IDC_DISABLEUI, viz.bDisableUI);
+        CheckDlgButton(hWnd, IDC_GHOSTMODE, viz.bGhostMode);
 
         const wchar_t* codepages[] = { L"CP-1252 (Western)", L"CP-932 (Japanese)", L"UTF-8" };
         for (size_t i = 0; i < sizeof(codepages) / sizeof(const wchar_t*); i++)
@@ -556,6 +557,7 @@ INT_PTR WINAPI VizProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             viz.bDumpFrames = IsDlgButtonChecked(hWnd, IDC_FFMPEG);
             viz.bColorLoop = IsDlgButtonChecked(hWnd, IDC_COLORLOOP);
             viz.bDisableUI = IsDlgButtonChecked(hWnd, IDC_DISABLEUI);
+            viz.bGhostMode = IsDlgButtonChecked(hWnd, IDC_GHOSTMODE);
             GetWindowTextW(GetDlgItem(hWnd, IDC_FONT), font, 1024);
             viz.sUIFont = font;
 

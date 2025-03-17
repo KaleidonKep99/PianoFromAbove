@@ -1064,7 +1064,7 @@ GameState::GameError MainScreen::Logic( void )
     m_iFPSCount++;
     if ( m_llFPSTime >= 500000 )
     {
-        m_dFPS = m_iFPSCount / ( m_llFPSTime / 1000000.0 );
+        m_dFPS = ((double)m_iFPSCount / ((double)m_llFPSTime / 1000000.0 ));
         m_llFPSTime = m_iFPSCount = 0;
     }
 
@@ -2053,12 +2053,18 @@ void MainScreen::RenderText()
     VizSettings viz = config.GetVizSettings();
 
     int iLines = 2;
+
     if (m_bShowFPS && !m_bDumpFrames)
         iLines++;
-    if (viz.bNerdStats)
-        iLines += 2;
-    if (m_Timer.m_bManualTimer && !m_bDumpFrames)
-        iLines++;
+
+    if (!viz.bGhostMode) {
+        if (viz.bNerdStats)
+            iLines += 2;
+        if (m_OutDevice.IsKDMAPIEnabled())
+            iLines += 2;
+        if (m_Timer.m_bManualTimer && !m_bDumpFrames)
+            iLines++;
+    }
 
     // Screen info
     int iMsgCY = 200;
@@ -2128,20 +2134,35 @@ void MainScreen::RenderStatus(int lines)
     );
 
     RenderStatusLine(cur_line++, width, "Time:", time_buf);
-    RenderStatusLine(cur_line++, width, "Tempo:", "%.3lf bpm", tempo);
 
-    // Framerate
-    if (m_bShowFPS && !m_bDumpFrames)
-        RenderStatusLine(cur_line++, width, "FPS:", "%.1lf", m_dFPS);
+    if (!viz.bGhostMode) {
+        RenderStatusLine(cur_line++, width, "Tempo:", "%.3lf bpm", tempo);
 
-    // Nerd stats
-    if (viz.bNerdStats) {
-        long long nps = 0;
-        for (size_t i = 0; i < m_dNPSNotes.size(); i++)
-            nps += std::get<1>(m_dNPSNotes[i]);
+        // Framerate
+        if (m_bShowFPS && !m_bDumpFrames)
+            RenderStatusLine(cur_line++, width, "FPS:", "%.1lf", m_dFPS);
 
-        RenderStatusLine(cur_line++, width, "NPS:", "%lld", nps);
-        RenderStatusLine(cur_line++, width, "Rendered:", "%llu", m_pRenderer->GetRenderedNotesCount());
+        if (m_OutDevice.IsKDMAPIEnabled()) {
+            RenderStatusLine(cur_line++, width, "Render time:", "%06.2f%%", m_OutDevice.KDMAPIRenderingTime());
+            RenderStatusLine(cur_line++, width, "Active voices:", "%d", m_OutDevice.KDMAPIActiveVoices());
+        }
+
+        // Nerd stats
+        if (viz.bNerdStats) {
+            long long nps = 0;
+            for (size_t i = 0; i < m_dNPSNotes.size(); i++)
+                nps += std::get<1>(m_dNPSNotes[i]);
+
+            RenderStatusLine(cur_line++, width, "NPS:", "%lld", nps);
+            RenderStatusLine(cur_line++, width, "Rendered:", "%llu", m_pRenderer->GetRenderedNotesCount());
+        }
+    }
+    else {
+        // Framerate
+        if (m_bShowFPS && !m_bDumpFrames)
+            RenderStatusLine(cur_line++, width, "FPS:", "%.1lf", m_dFPS);
+
+        RenderStatusLine(cur_line++, width, "Score:", "N/A", m_dFPS);
     }
 }
 

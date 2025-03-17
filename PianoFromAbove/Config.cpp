@@ -560,6 +560,7 @@ bool VizSettings::SaveConfigValues(TiXmlElement* txRoot) {
     txViz->SetAttribute("ColorLoop", bColorLoop);
     txViz->SetAttribute("KDMAPI", bKDMAPI);
     txViz->SetAttribute("DisableUI", bDisableUI);
+    txViz->SetAttribute("GhostMode", bGhostMode);
     txViz->SetAttribute("UIScale", fUIScale);
     txViz->SetAttribute("UIFont", Util::WstringToString(sUIFont));
 

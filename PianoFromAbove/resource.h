@@ -122,6 +122,8 @@
 #define IDC_DISABLEUI                   1113
 #define IDC_BACKGROUNDRESET2            1114
 #define IDC_FONTRESET                   1114
+#define IDC_DISABLEUI2                  1115
+#define IDC_GHOSTMODE                   1115
 #define ID_FILE_PLAYFILE                40001
 #define ID_FILE_ADDFILE                 40002
 #define ID_FILE_ADDFOLDER               40003
